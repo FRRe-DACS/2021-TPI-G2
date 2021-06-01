@@ -18,14 +18,15 @@ function App() {
 
   const handleNotification = async () => {
     setNotification({ open: false, message: "" });
-    const estado = await axios.get(`http://localhost:3050/notifications/${inputCuit}`);
-    const res = estado.data;
-    if (res.notification.status) {
-      setNotification({ open: true, message: res.notification.message });
+    const estado = await axios.get(`http://localhost:4000/notifications/${inputCuit}`);
+    const { notification, alerts } = estado.data.data;
+
+    if (notification.status) {
+      setNotification({ open: true, message: notification.message });
     } else {
-      setNotification({ open: true, message: [res.notification, res.alerts] });
+      setNotification({ open: true, message: alerts[0].title + ": " + alerts[0].description });
     }
-    setNotification({ open: true, message: estado.notification["message"] });
+    // setNotification({ open: true, message: notification["message"] });
   };
 
   const handleCuit = async () => {
